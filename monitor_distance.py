@@ -51,6 +51,8 @@ def output_distance():
 
 try:
     output_thread = threading.Thread(target=output_distance)
+    output_thread = threading.Thread(target=blink_led)
+    
     output_thread.start()
     output_thread.join()
 except KeyboardInterrupt:
