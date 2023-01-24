@@ -37,12 +37,9 @@ def output_distance():
         while True:
             distance = get_distance()
             print("Distance: ", distance, " cm")
-            if distance < 30:
-                blink_frequency = 0.5
-            elif distance < 60:
-                blink_frequency = 0.8
-            else:
-                blink_frequency = 1
+            if distance > 500:
+                continue
+            blink_frequency = distance / 100
             GPIO.output(led, True)
             time.sleep(blink_frequency)
             GPIO.output(led, False)
