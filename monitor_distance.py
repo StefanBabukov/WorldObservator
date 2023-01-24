@@ -13,6 +13,7 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 GPIO.setup(led, GPIO.OUT)
+global distance
 
 def get_distance():
      
@@ -32,6 +33,16 @@ def get_distance():
 
     distance = (stop_time - start_time) * 34300 / 2
     return distance
+
+def blink_led():
+    while True:        
+        if distance > 500:
+            continue
+        sleep_time = distance/100
+        GPIO.output(led, True)
+        time.sleep(sleep_time/2)
+        GPIO.output(led, False)
+        time.sleep(sleep_time/2)
 
 def output_distance():
         while True:
