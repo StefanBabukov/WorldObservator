@@ -34,16 +34,17 @@ def get_distance():
     return distance
 
 def output_distance():
-    try:
         while True:
             distance = get_distance()
             print("Distance: ", distance, " cm")
-    except KeyboardInterrupt:
-        print("Measurement stopped by User")
-        GPIO.cleanup()
 
-output_thread = threading.Thread(target=output_distance)
-output_thread.start()
+try:
+    output_thread = threading.Thread(target=output_distance)
+    output_thread.start()
+    output_thread.join()
+except KeyboardInterrupt:
+    print("Measurement stopped by User")
+    GPIO.cleanup()
 
 
 # def distance():
