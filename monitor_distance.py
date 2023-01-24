@@ -38,7 +38,7 @@ def get_distance():
 def alert_user():
     global distance
     while True:
-        if distance > 100:
+        if distance > 70:
             continue
         blink_frequency = distance / 100
         GPIO.output(led, True)
