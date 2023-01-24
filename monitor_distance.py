@@ -34,7 +34,7 @@ def get_distance():
 
     distance = (stop_time - start_time) * 34300 / 2
     return distance
-    
+
 def alert_user():
     global distance
     while True:
@@ -54,9 +54,10 @@ def output_distance():
 
 try:
     output_thread = threading.Thread(target=output_distance)
-    output_thread = threading.Thread(target=alert_user)
+    output_thread2 = threading.Thread(target=alert_user)
 
     output_thread.start()
+    output_thread2.start()
     output_thread.join()
 except KeyboardInterrupt:
     print("Measurement stopped by User")
