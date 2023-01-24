@@ -18,7 +18,7 @@ def get_distance():
      
     #GPIO pins
     GPIO.output(GPIO_TRIGGER, True)
-    time.sleep(0.00001)
+    time.sleep(0.05)
     GPIO.output(GPIO_TRIGGER, False)
 
     start_time = time.time()
