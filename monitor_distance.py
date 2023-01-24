@@ -2,22 +2,21 @@ import RPi.GPIO as GPIO
 import time
 import threading
 
+GPIO_TRIGGER = 7
+GPIO_ECHO = 11
+led = 13
+
+# following the board pin numbering 
+GPIO.setmode(GPIO.BOARD)
+
+#set GPIO direction (IN / OUT)
+GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
+GPIO.setup(GPIO_ECHO, GPIO.IN)
+GPIO.setup(led, GPIO.OUT)
 
 def get_distance():
      
     #GPIO pins
-    GPIO_TRIGGER = 7
-    GPIO_ECHO = 11
-    led = 13
-
-    # following the board pin numbering 
-    GPIO.setmode(GPIO.BOARD)
-
-    #set GPIO direction (IN / OUT)
-    GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
-    GPIO.setup(GPIO_ECHO, GPIO.IN)
-    GPIO.setup(led, GPIO.OUT)
-
     GPIO.output(GPIO_TRIGGER, True)
     time.sleep(0.00001)
     GPIO.output(GPIO_TRIGGER, False)
