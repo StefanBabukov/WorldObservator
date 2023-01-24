@@ -40,7 +40,7 @@ def output_distance():
 
 output_thread = threading.Thread(target=output_distance)
 output_thread.start()
-
+output_thread.join()
 GPIO.cleanup()
 
 
