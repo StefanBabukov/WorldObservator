@@ -33,11 +33,20 @@ def get_distance():
     distance = (stop_time - start_time) * 34300 / 2
     return distance
 
-
 def output_distance():
         while True:
             distance = get_distance()
             print("Distance: ", distance, " cm")
+            if distance < 30:
+                blink_frequency = 0.5
+            elif distance < 60:
+                blink_frequency = 0.8
+            else:
+                blink_frequency = 1
+            GPIO.output(led, True)
+            time.sleep(blink_frequency)
+            GPIO.output(led, False)
+            time.sleep(blink_frequency)
 
 try:
     output_thread = threading.Thread(target=output_distance)
