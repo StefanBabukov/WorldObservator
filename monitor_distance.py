@@ -54,7 +54,7 @@ def output_distance():
     global distances
     while True:
         for sensor in range(len(TRIGGERS)-1):
-            distances[sensor] = get_distance(TRIGGERS[sensor], ECHOS[sensor])
+            distances.append(get_distance(TRIGGERS[sensor], ECHOS[sensor]))
         print("Distance 1: ", distances[0], " Distance 2: ", distances[1], " Distance 3: ", distances[2])
 
 try:
