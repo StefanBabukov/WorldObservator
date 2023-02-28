@@ -59,12 +59,12 @@ def output_distance():
 
 try:
     measuring_thread = threading.Thread(target=output_distance)
+    measuring_thread.start()
 
     for sensor in range(len(TRIGGERS)-1):
         thread = threading.Thread(target=alert_user, args=(sensor, ))
         thread.start()
 
-    measuring_thread.start()
     measuring_thread.join()
 except KeyboardInterrupt:
     print("Measurement stopped by User")
