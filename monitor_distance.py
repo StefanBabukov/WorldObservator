@@ -17,6 +17,8 @@ for echo in ECHOS:
 for output in OUTPUTS:
     GPIO.setup(output, GPIO.OUT)
 
+distances = []
+
 def get_distance(trigger, echo):
      
     #GPIO pins
