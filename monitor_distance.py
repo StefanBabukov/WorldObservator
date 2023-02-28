@@ -52,11 +52,10 @@ def alert_user(sensor):
 
 def output_distance():
     global distances
-    distances = []
     while True:
         for sensor in range(len(TRIGGERS)-1):
-            distances.append(get_distance(TRIGGERS[sensor], ECHOS[sensor]))
-        print(distances)
+            distances[sensor] = get_distance(TRIGGERS[sensor], ECHOS[sensor])
+        print("Distance 1: ", distances[0], " Distance 2: ", distances[1], " Distance 3: ", distances[2])
 
 try:
     measuring_thread = threading.Thread(target=output_distance)
