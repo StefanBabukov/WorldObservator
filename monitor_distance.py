@@ -70,4 +70,6 @@ try:
     measuring_thread.join()
 except KeyboardInterrupt:
     print("Measurement stopped by User")
+finally:
+    print("Clean up")
     GPIO.cleanup()
