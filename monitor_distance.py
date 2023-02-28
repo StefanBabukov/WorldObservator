@@ -17,8 +17,6 @@ for echo in ECHOS:
 for output in OUTPUTS:
     GPIO.setup(output, GPIO.OUT)
 
-distance = {}
-
 def get_distance(trigger, echo):
      
     #GPIO pins
@@ -42,9 +40,9 @@ def get_distance(trigger, echo):
 def alert_user(sensor):
     global distances
     while True:
-        if distance > 70:
+        if distances[sensor] > 70:
             continue
-        blink_frequency = distance / 100
+        blink_frequency = distances[sensor] / 100
         GPIO.output(OUTPUTS[sensor], True)
         time.sleep(blink_frequency)
         GPIO.output(OUTPUTS[sensor], False)
