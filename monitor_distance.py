@@ -3,19 +3,31 @@ import time
 import threading
 
 
-TRIGGERS = [7, 8, 12]
-ECHOS = [11, 10, 16]
-OUTPUTS = [37, 38, 40]
+# TRIGGERS = [7, 8, 12]
+# ECHOS = [11, 10, 16]
+# OUTPUTS = [37, 38, 40]
+
+MEASUREMENTS = [{
+    "trigger": 7,
+    "echo": 11,
+    "output": 37
+},{
+    "trigger": 8,
+    "echo": 10,
+    "output": 38,
+},{
+    "trigger": 12,
+    "echo": 16,
+    "output": 40,
+},]
 # following the board pin numbering 
 GPIO.setmode(GPIO.BOARD)
 
 #set GPIO direction (IN / OUT)
-for trigger in TRIGGERS:
-    GPIO.setup(trigger, GPIO.OUT)
-for echo in ECHOS:
-    GPIO.setup(echo, GPIO.IN)
-for output in OUTPUTS:
-    GPIO.setup(output, GPIO.OUT)
+for setup in MEASUREMENTS:
+    GPIO.setup(setup["trigger"], GPIO.OUT)
+    GPIO.setup(setup["echo"], GPIO.IN)
+    GPIO.setup(setup["output"], GPIO.OUT)
 
 distances = []
 
@@ -42,26 +54,26 @@ def get_distance(trigger, echo):
 def alert_user(sensor):
     global distances
     while True and len(distances)==3:
-        if distances[sensor] > 70:
+        if sensor["distance"] and sensor["distance"] > 70:
             continue
         blink_frequency = distances[sensor] / 100
-        GPIO.output(OUTPUTS[sensor], True)
+        GPIO.output(sensor["output"], True)
         time.sleep(blink_frequency)
-        GPIO.output(OUTPUTS[sensor], False)
+        GPIO.output(sensor["output"], False)
         time.sleep(blink_frequency)
 
 def output_distance():
     global distances
     while True:
-        for sensor in range(len(TRIGGERS)-1):
-            distances[sensor] = get_distance(TRIGGERS[sensor], ECHOS[sensor])
+        for sensor in MEASUREMENTS:
+            sensor["distance"] = get_distance(sensor["trigger"], sensor["echo"])
         print("Distance 1: ", distances[0], " Distance 2: ", distances[1], " Distance 3: ", distances[2])
 
 try:
     measuring_thread = threading.Thread(target=output_distance)
     measuring_thread.start()
 
-    for sensor in range(len(TRIGGERS)-1):
+    for sensor in MEASUREMENTS:
         thread = threading.Thread(target=alert_user, args=(sensor, ))
         thread.start()
 
