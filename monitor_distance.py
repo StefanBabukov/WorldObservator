@@ -2,34 +2,41 @@ import RPi.GPIO as GPIO
 import time
 import threading
 
-GPIO_TRIGGER = 7
-GPIO_ECHO = 11
+TRIGGER = 7
+ECHO = 11
+
+TRIGGER2 = 8
+ECHO2 = 10
+
 led = 13
 
 # following the board pin numbering 
 GPIO.setmode(GPIO.BOARD)
 
 #set GPIO direction (IN / OUT)
-GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
-GPIO.setup(GPIO_ECHO, GPIO.IN)
+GPIO.setup(TRIGGER, GPIO.OUT)
+GPIO.setup(ECHO, GPIO.IN)
+GPIO.setup(TRIGGER2, GPIO.OUT)
+GPIO.setup(ECHO2, GPIO.IN)
 GPIO.setup(led, GPIO.OUT)
 
 distance = 0
 
-def get_distance():
+def get_distance(trigger, echo):
      
     #GPIO pins
-    GPIO.output(GPIO_TRIGGER, True)
+    GPIO.output(trigger, True)
+
     time.sleep(0.00001)
-    GPIO.output(GPIO_TRIGGER, False)
+    GPIO.output(trigger, False)
 
     start_time = time.time()
     stop_time = time.time()
 
-    while GPIO.input(GPIO_ECHO) == 0:
+    while GPIO.input(echo) == 0:
         start_time = time.time()
 
-    while GPIO.input(GPIO_ECHO) == 1:
+    while GPIO.input(echo) == 1:
         stop_time = time.time()
 
     distance = (stop_time - start_time) * 34300 / 2
@@ -49,8 +56,9 @@ def alert_user():
 def output_distance():
     global distance
     while True:
-        distance = get_distance()
-        print("Distance: ", distance, " cm")
+        distance = get_distance(TRIGGER, ECHO)
+        distance2 = get_distance(TRIGGER2, ECHO2)
+        print("Distance 1: ", distance, " cm", " Distance 2: ", distance2, " cm")
 
 try:
     output_thread = threading.Thread(target=output_distance)
