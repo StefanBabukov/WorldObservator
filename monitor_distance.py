@@ -67,7 +67,7 @@ def output_distance():
     while True:
         for sensor in MEASUREMENTS:
             sensor["distance"] = get_distance(sensor["trigger"], sensor["echo"])
-        print("Distance 1: ", distances[0], " Distance 2: ", distances[1], " Distance 3: ", distances[2])
+            print("Distance ", sensor["distance"])
 
 try:
     measuring_thread = threading.Thread(target=output_distance)
