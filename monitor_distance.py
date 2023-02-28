@@ -41,7 +41,7 @@ def get_distance(trigger, echo):
 
 def alert_user(sensor):
     global distances
-    while True:
+    while True and len(distances)==3:
         if distances[sensor] > 70:
             continue
         blink_frequency = distances[sensor] / 100
