@@ -54,9 +54,10 @@ def get_distance(trigger, echo):
 def alert_user(sensor):
     global distances
     while True:
-        if sensor["distance"] and sensor["distance"] > 70:
+        current_distance = sensor["distance"]
+        if current_distance and current_distance > 70:
             continue
-        blink_frequency = distances[sensor] / 100
+        blink_frequency = current_distance / 100
         GPIO.output(sensor["output"], True)
         time.sleep(blink_frequency)
         GPIO.output(sensor["output"], False)
