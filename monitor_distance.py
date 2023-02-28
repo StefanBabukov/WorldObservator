@@ -4,7 +4,7 @@ import threading
 
 
 TRIGGERS = [7, 8, 12]
-ECHOS = [11, 10, 14]
+ECHOS = [11, 10, 16]
 OUTPUTS = [37, 38, 40]
 # following the board pin numbering 
 GPIO.setmode(GPIO.BOARD)
