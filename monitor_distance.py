@@ -10,7 +10,8 @@ import threading
 MEASUREMENTS = [{
     "trigger": 7,
     "echo": 11,
-    "output": 37}]
+    "output": 37,
+    "distance": False}]
 # },{
 #     "trigger": 8,
 #     "echo": 10,
