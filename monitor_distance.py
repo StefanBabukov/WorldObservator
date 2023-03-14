@@ -10,16 +10,16 @@ import threading
 MEASUREMENTS = [{
     "trigger": 7,
     "echo": 11,
-    "output": 37
-},{
-    "trigger": 8,
-    "echo": 10,
-    "output": 38,
-},{
-    "trigger": 12,
-    "echo": 16,
-    "output": 40,
-},]
+    "output": 37}]
+# },{
+#     "trigger": 8,
+#     "echo": 10,
+#     "output": 38,
+# },{
+#     "trigger": 12,
+#     "echo": 16,
+#     "output": 40,
+# },]
 # following the board pin numbering 
 GPIO.setmode(GPIO.BOARD)
 
@@ -68,7 +68,7 @@ def output_distance():
     while True:
         for sensor in MEASUREMENTS:
             sensor["distance"] = get_distance(sensor["trigger"], sensor["echo"])
-        print("Distance 1: ", MEASUREMENTS[0]["distance"], " Distance 2: ", MEASUREMENTS[1]["distance"], " Distance 3: ", MEASUREMENTS[2]["distance"])
+        # print("Distance 1: ", MEASUREMENTS[0]["distance"], " Distance 2: ", MEASUREMENTS[1]["distance"], " Distance 3: ", MEASUREMENTS[2]["distance"])
 
 try:
     measuring_thread = threading.Thread(target=output_distance)
