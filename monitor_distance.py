@@ -55,7 +55,6 @@ def get_distance(trigger, echo):
         stop_time = time.time()
 
     distance = (stop_time - start_time) * 34300 / 2
-    print("Distance here !!! ", distance)
     return distance
 
 def get_buzz_frequency(distance):
