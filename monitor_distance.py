@@ -59,14 +59,7 @@ def get_distance(trigger, echo):
     return distance
 
 def get_buzz_frequency(distance):
-    delay = 0
-    if distance > 60:
-        delay = 1.5
-    elif distance > 30:
-        delay = 1
-    elif distance < 15:
-        delay=0.5
-    return delay
+    return distance / 60
 
 def alert_user(sensor):
     global distances
