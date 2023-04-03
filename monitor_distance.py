@@ -78,7 +78,7 @@ def alert_user(sensor):
         GPIO.output(sensor["output"], True)
         time.sleep(buzz_frequency)
         GPIO.output(sensor["output"], False)
-        # time.sleep(buzz_frequency)
+        time.sleep(buzz_frequency)
 
 def output_distance():
     global distances
