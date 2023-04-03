@@ -8,20 +8,24 @@ import threading
 # OUTPUTS = [37, 38, 40]
 
 MEASUREMENTS = [{
+    #forward
     "trigger": 7,
     "echo": 11,
     "output": 37,
     "distance": False,
+    "alertDistance": 50,
 # },{
 #     "trigger": 8,
 #     "echo": 10,
 #     "output": 38,
  },{
+    #left
      "trigger": 12,
      "echo": 16,
      "output": 40,
-     "distance": False
-},]
+     "distance": False,
+     "alertDistance": 25,
+}]
 # following the board pin numbering 
 GPIO.setmode(GPIO.BOARD)
 
@@ -58,13 +62,13 @@ def alert_user(sensor):
     global distances
     while True:
         current_distance = sensor["distance"]
-        if current_distance and current_distance > 70:
+        if current_distance and current_distance < sensor['alertDistance']:
             continue
-        blink_frequency = current_distance / 100
+        buzz_frequency = current_distance / 10
         GPIO.output(sensor["output"], True)
-        time.sleep(blink_frequency)
+        time.sleep(buzz_frequency)
         GPIO.output(sensor["output"], False)
-        time.sleep(blink_frequency)
+        time.sleep(buzz_frequency)
 
 def output_distance():
     global distances
