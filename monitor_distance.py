@@ -58,13 +58,23 @@ def get_distance(trigger, echo):
     print("Distance here !!! ", distance)
     return distance
 
+def get_buzz_frequency(distance):
+    delay = 0
+    if distance > 60:
+        delay = 1.5
+    elif distance > 30:
+        delay = 1
+    elif distance < 15:
+        delay=0.5 
+    return delay
+
 def alert_user(sensor):
     global distances
     while True:
         current_distance = sensor["distance"]
         if current_distance and current_distance < sensor['alertDistance']:
             continue
-        buzz_frequency = current_distance / 10
+        buzz_frequency = get_buzz_frequency(current_distance)
         GPIO.output(sensor["output"], True)
         time.sleep(buzz_frequency)
         GPIO.output(sensor["output"], False)
