@@ -72,13 +72,12 @@ def alert_user(sensor):
     global distances
     while True:
         current_distance = sensor["distance"]
-        if current_distance or current_distance < sensor['alertDistance']:
-            continue
-        buzz_frequency = get_buzz_frequency(current_distance)
-        GPIO.output(sensor["output"], True)
-        time.sleep(buzz_frequency)
-        GPIO.output(sensor["output"], False)
-        time.sleep(buzz_frequency)
+        if current_distance and current_distance < sensor['alertDistance']:
+            buzz_frequency = get_buzz_frequency(current_distance)
+            GPIO.output(sensor["output"], True)
+            time.sleep(buzz_frequency)
+            GPIO.output(sensor["output"], False)
+            time.sleep(buzz_frequency)
 
 def output_distance():
     global distances
