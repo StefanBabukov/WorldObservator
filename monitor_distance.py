@@ -59,7 +59,10 @@ def get_distance(trigger, echo):
     return distance
 
 def get_buzz_frequency(distance):
-    return distance / 60
+    frequency = distance / 60
+    if frequency < 0.25:
+        frequency = 0.25
+    return frequency
 
 def alert_user(sensor):
     global distances
