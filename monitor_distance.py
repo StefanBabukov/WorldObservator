@@ -12,6 +12,7 @@ MEASUREMENTS = [{
     "alertDistance": 65,
 },
 {   
+    #left
     "alertDistance" : 40,
     "distance": False,
     "trigger": 8,
@@ -19,7 +20,7 @@ MEASUREMENTS = [{
     "output": 38,
     },
 {
-    #left
+    #right
     "trigger": 12,
     "echo": 16,
     "output": 40,
@@ -45,8 +46,15 @@ def get_distance(trigger, echo, num_readings):
         while GPIO.input(echo) == 0:
             start_time = time.time()
         while GPIO.input(echo) == 1:
+            elapsed_time = (time.time() - start_time)
+            if elapsed_time > 0.0001:  # check if elapsed time exceeds 100 microseconds
+                distance = 100  # set distance to 100 and exit loop
+                break
             stop_time = time.time()
-        distance = (stop_time - start_time) * 34300 / 2
+        else:
+            distance = (stop_time - start_time) * 34300 / 2
+            if distance > 100:
+                distance = 100
         distances.append(distance)
         time.sleep(0.01)
     return sum(distances) / num_readings
