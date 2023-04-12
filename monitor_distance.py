@@ -50,6 +50,7 @@ def get_distance(trigger, echo, num_readings):
             stop_time = time.time()
             if stop_time - pulse_start > 0.01: # break if echo remains high for too long
                 distance = 100
+                print('breaking from here')
                 break
             else:
                 distance = (stop_time - start_time) * 34300 / 2
@@ -64,14 +65,15 @@ def get_buzz_frequency(distance):
         frequency = 0.25
     return frequency
 
-def alert_user(sensor):
+def alert_user(distance):
     while True:
-        current_distance = sensor["distance"]
+        current_distance = distance[1]
+        output_pin = distance[0]
         if current_distance and current_distance < sensor['alertDistance']:
             buzz_frequency = get_buzz_frequency(current_distance)
-            GPIO.output(sensor["output"], True)
+            GPIO.output(output_pin, True)
             time.sleep(buzz_frequency)
-            GPIO.output(sensor["output"], False)
+            GPIO.output(output_pin, False)
             time.sleep(buzz_frequency)
 
 def print_distance():
@@ -79,21 +81,18 @@ def print_distance():
         print("Sensor ", sensor['name'] , " Distance: ", sensor['distance'])
 
 def output_distance():
-    while True:
-        for sensor in MEASUREMENTS:
-            sensor["distance"] = get_distance(sensor["trigger"], sensor["echo"], 2)
-        print_distance()
-        time.sleep(0.25)
+    #holding data in the format [outputpin, distance]
+    distances = []
+    for sensor in MEASUREMENTS:
+        distances.append[[sensor['output'], get_distance(sensor["trigger"], sensor["echo"], 2)]]
+    print_distance()
+    return distances
 
 try:
-    measuring_thread = threading.Thread(target=output_distance)
-    measuring_thread.start()
-
-    for sensor in MEASUREMENTS:
-        thread = threading.Thread(target=alert_user, args=(sensor, ))
-        thread.start()
-
-    measuring_thread.join()
+    distances = output_distance()
+    for distance in distances:
+        alert_user(distance)
+    
 except KeyboardInterrupt:
     print("Measurement stopped by User")
 finally:
