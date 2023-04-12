@@ -47,7 +47,7 @@ def get_distance(trigger, echo, num_readings):
             start_time = time.time()
         while GPIO.input(echo) == 1:
             elapsed_time = (time.time() - start_time)
-            if elapsed_time > 0.01:  # check if elapsed time exceeds 100 microseconds
+            if elapsed_time > 0.005:  # check if elapsed time exceeds 500 microseconds
                 distance = 100  # set distance to 100 and exit loop
                 break
             stop_time = time.time()
@@ -75,11 +75,15 @@ def alert_user(sensor):
             GPIO.output(sensor["output"], False)
             time.sleep(buzz_frequency)
 
+def print_distance():
+    for sensor, indx in MEASUREMENTS:
+        print("Sensor ", indx , " Distance: ", sensor['distance'])
+
 def output_distance():
     while True:
         for sensor in MEASUREMENTS:
             sensor["distance"] = get_distance(sensor["trigger"], sensor["echo"], 2)
-            print("Sensor:", sensor['trigger'], "Distance:", sensor["distance"])
+        print_distance()
         time.sleep(0.25)
 
 try:
