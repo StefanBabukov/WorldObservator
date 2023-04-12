@@ -90,10 +90,10 @@ try:
         thread = threading.Thread(target=alert_user, args=(sensor, ))
         thread.start()
     while True:
-        distances = []
         for sensor in MEASUREMENTS:
-            sensor['distance'] = get_distance(sensor["trigger"], sensor["echo"], 2)
-        
+            distance = get_distance(sensor["trigger"], sensor["echo"], 2)
+            sensor['distance'] = distance
+        print_distance()
 except KeyboardInterrupt:
     print("Measurement stopped by User")
 finally:
