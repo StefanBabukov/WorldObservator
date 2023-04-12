@@ -90,16 +90,27 @@ def print_distance():
 #     return distance
 
 try:
+    threads = []
     for sensor in MEASUREMENTS:
         thread = threading.Thread(target=alert_user, args=(sensor, sensor['output'], sensor['distance']))
         thread.start()
+        threads.append(thread)
+
     while True:
         for sensor in MEASUREMENTS:
             distance = get_distance(sensor["trigger"], sensor["echo"], 2)
             sensor['distance'] = distance
+            buzz_frequency = get_buzz_frequency(distance)
+
         print_distance()
+
+        time.sleep(0.01) # Wait for a short period to avoid excessive CPU usage
+
 except KeyboardInterrupt:
     print("Measurement stopped by User")
+
 finally:
     print("Clean up")
+    for thread in threads:
+        thread.join()
     GPIO.cleanup()
