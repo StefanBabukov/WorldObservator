@@ -91,7 +91,7 @@ def print_distance():
 
 try:
     for sensor in MEASUREMENTS:
-        thread = threading.Thread(target=alert_user, args=(sensor, ))
+        thread = threading.Thread(target=alert_user, args=(sensor, sensor['output'], sensor['distance']))
         thread.start()
     while True:
         for sensor in MEASUREMENTS:
