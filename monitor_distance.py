@@ -47,13 +47,13 @@ def get_distance(trigger, echo, num_readings):
             start_time = time.time()
         pulse_start = time.time()
         while GPIO.input(echo) == 1:
-            if time.time() - pulse_start > 0.01: # break if echo remains high for too long
-                break
             stop_time = time.time()
-        else:
-            distance = (stop_time - start_time) * 34300 / 2
-            if distance > 100:
+            if stop_time - pulse_start > 0.01: # break if echo remains high for too long
                 distance = 100
+                break
+            else:
+                distance = (stop_time - start_time) * 34300 / 2
+
         distances.append(distance)
         time.sleep(0.01)
     return sum(distances) / num_readings
