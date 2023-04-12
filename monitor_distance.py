@@ -65,17 +65,20 @@ def get_buzz_frequency(distance):
         frequency = 0.25
     return frequency
 
-def alert_user(distance, output_pin, alert_distance):
-    print("distance is ", distance)
-    if distance and distance < alert_distance:
-        buzz_frequency = get_buzz_frequency(distance)
-        print('buzz frequency', buzz_frequency)
-        GPIO.output(output_pin, True)
-        time.sleep(buzz_frequency)
-        GPIO.output(output_pin, False)
-        time.sleep(buzz_frequency)
-    else:
-        time.sleep(0.25)
+def alert_user():
+    while True:
+        for sensor in MEASUREMENTS:
+            print("distance is ", distance)
+            distance = sensor['distance']
+            if distance and distance < sensor['alert_distance']:
+                buzz_frequency = get_buzz_frequency(distance)
+                print('buzz frequency', buzz_frequency)
+                GPIO.output(sensor['output'], True)
+                time.sleep(buzz_frequency)
+                GPIO.output(sensor['output'], False)
+                time.sleep(buzz_frequency)
+            else:
+                time.sleep(0.25)
 
 def print_distance():
     for sensor in MEASUREMENTS:
@@ -90,11 +93,8 @@ def print_distance():
 #     return distance
 
 try:
-    threads = []
-    for sensor in MEASUREMENTS:
-        thread = threading.Thread(target=alert_user, args=(sensor, sensor['output'], sensor['distance']))
-        thread.start()
-        threads.append(thread)
+    thread = threading.Thread(target=alert_user)
+    thread.start()
 
     while True:
         for sensor in MEASUREMENTS:
@@ -111,6 +111,4 @@ except KeyboardInterrupt:
 
 finally:
     print("Clean up")
-    for thread in threads:
-        thread.join()
     GPIO.cleanup()
