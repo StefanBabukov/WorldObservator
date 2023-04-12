@@ -45,10 +45,9 @@ def get_distance(trigger, echo, num_readings):
         stop_time = time.time()
         while GPIO.input(echo) == 0:
             start_time = time.time()
+        pulse_start = time.time()
         while GPIO.input(echo) == 1:
-            elapsed_time = (time.time() - start_time)
-            if elapsed_time > 0.005:  # check if elapsed time exceeds 500 microseconds
-                distance = 100  # set distance to 100 and exit loop
+            if time.time() - pulse_start > 0.01: # break if echo remains high for too long
                 break
             stop_time = time.time()
         else:
