@@ -3,59 +3,53 @@ import time
 import threading
 
 
-# TRIGGERS = [7, 8, 12]
-# ECHOS = [11, 10, 16]
-# OUTPUTS = [37, 38, 40]
-
 MEASUREMENTS = [{
     #forward
     "trigger": 7,
     "echo": 11,
     "output": 37,
     "distance": False,
-    "alertDistance": 50,
-# },{
-#     "trigger": 8,
-#     "echo": 10,
-#     "output": 38,
- },{
+    "alertDistance": 65,
+},
+{   
+    "alertDistance" : 40,
+    "distance": False,
+    "trigger": 8,
+    "echo": 10,
+    "output": 38,
+    },
+{
     #left
-     "trigger": 12,
-     "echo": 16,
-     "output": 40,
-     "distance": False,
-     "alertDistance": 25,
+    "trigger": 12,
+    "echo": 16,
+    "output": 40,
+    "distance": False,
+    "alertDistance": 40,
 }]
-# following the board pin numbering 
+
 GPIO.setmode(GPIO.BOARD)
 
-#set GPIO direction (IN / OUT)
 for setup in MEASUREMENTS:
     GPIO.setup(setup["trigger"], GPIO.OUT)
     GPIO.setup(setup["echo"], GPIO.IN)
     GPIO.setup(setup["output"], GPIO.OUT)
 
-distances = []
-
-def get_distance(trigger, echo):
-     
-    #GPIO pins
-    GPIO.output(trigger, True)
-
-    time.sleep(0.00001)
-    GPIO.output(trigger, False)
-
-    start_time = time.time()
-    stop_time = time.time()
-
-    while GPIO.input(echo) == 0:
+def get_distance(trigger, echo, num_readings):
+    distances = []
+    for i in range(num_readings):
+        GPIO.output(trigger, True)
+        time.sleep(0.00001)
+        GPIO.output(trigger, False)
         start_time = time.time()
-
-    while GPIO.input(echo) == 1:
         stop_time = time.time()
-
-    distance = (stop_time - start_time) * 34300 / 2
-    return distance
+        while GPIO.input(echo) == 0:
+            start_time = time.time()
+        while GPIO.input(echo) == 1:
+            stop_time = time.time()
+        distance = (stop_time - start_time) * 34300 / 2
+        distances.append(distance)
+        time.sleep(0.01)
+    return sum(distances) / num_readings
 
 def get_buzz_frequency(distance):
     frequency = distance / 60
@@ -64,7 +58,6 @@ def get_buzz_frequency(distance):
     return frequency
 
 def alert_user(sensor):
-    global distances
     while True:
         current_distance = sensor["distance"]
         if current_distance and current_distance < sensor['alertDistance']:
@@ -75,11 +68,11 @@ def alert_user(sensor):
             time.sleep(buzz_frequency)
 
 def output_distance():
-    global distances
     while True:
         for sensor in MEASUREMENTS:
-            sensor["distance"] = get_distance(sensor["trigger"], sensor["echo"])
-        print("Distance 1: ", MEASUREMENTS[0]["distance"], "Distance 2: ", MEASUREMENTS[1]["distance"])
+            sensor["distance"] = get_distance(sensor["trigger"], sensor["echo"], 2)
+            print("Sensor:", sensor['trigger'], "Distance:", sensor["distance"])
+        time.sleep(0.25)
 
 try:
     measuring_thread = threading.Thread(target=output_distance)
