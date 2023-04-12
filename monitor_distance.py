@@ -66,12 +66,16 @@ def get_buzz_frequency(distance):
     return frequency
 
 def alert_user(distance, output_pin, alert_distance):
+    print("distance is ", distance)
     if distance and distance < alert_distance:
         buzz_frequency = get_buzz_frequency(distance)
+        print('buzz frequency', buzz_frequency)
         GPIO.output(output_pin, True)
         time.sleep(buzz_frequency)
         GPIO.output(output_pin, False)
         time.sleep(buzz_frequency)
+    else:
+        time.sleep(0.25)
 
 def print_distance():
     for sensor in MEASUREMENTS:
