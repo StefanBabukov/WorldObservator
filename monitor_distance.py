@@ -4,7 +4,7 @@ import threading
 
 
 MEASUREMENTS = [{
-    #forward
+    "name": "forward",
     "trigger": 7,
     "echo": 11,
     "output": 37,
@@ -12,7 +12,7 @@ MEASUREMENTS = [{
     "alertDistance": 65,
 },
 {   
-    #left
+    "name": "left",
     "alertDistance" : 40,
     "distance": False,
     "trigger": 8,
@@ -20,7 +20,7 @@ MEASUREMENTS = [{
     "output": 38,
     },
 {
-    #right
+    "name": "right",
     "trigger": 12,
     "echo": 16,
     "output": 40,
@@ -76,8 +76,8 @@ def alert_user(sensor):
             time.sleep(buzz_frequency)
 
 def print_distance():
-    for sensor, indx in MEASUREMENTS:
-        print("Sensor ", indx , " Distance: ", sensor['distance'])
+    for sensor in MEASUREMENTS:
+        print("Sensor ", sensor['name'] , " Distance: ", sensor['distance'])
 
 def output_distance():
     while True:
