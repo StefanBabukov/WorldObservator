@@ -96,7 +96,7 @@ try:
 
     while True:
         for sensor in MEASUREMENTS:
-            distance = get_distance(sensor["trigger"], sensor["echo"], 2)
+            distance = get_distance(sensor["trigger"], sensor["echo"], 4)
             sensor['distance'] = distance
             buzz_frequency = get_buzz_frequency(distance)
 
