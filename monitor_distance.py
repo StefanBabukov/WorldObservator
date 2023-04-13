@@ -72,6 +72,8 @@ def alert_user():
     while True:
         for sensor in MEASUREMENTS:
             distance = sensor['distance']
+            if distance=='clear':
+                continue
             if distance and distance < sensor['alertDistance']:
                 buzz_frequency = get_buzz_frequency(distance)
                 GPIO.output(sensor['output'], True)
@@ -84,7 +86,7 @@ def print_distance():
         distance = sensor['distance']
         if distance == 'clear':
             print("Sensor ", sensor['name'] , "CLEAR")
-            return
+            continue
         print("Sensor ", sensor['name'] , " Object at: ",  "{:.2f} ".format(distance), ' cm')
         
 
