@@ -78,8 +78,6 @@ def alert_user():
                 time.sleep(buzz_frequency)
                 GPIO.output(sensor['output'], False)
                 time.sleep(buzz_frequency)
-            else:
-                time.sleep(0.25)
 
 def print_distance():
     for sensor in MEASUREMENTS:
