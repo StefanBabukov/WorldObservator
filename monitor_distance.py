@@ -7,13 +7,13 @@ MEASUREMENTS = [{
     "name": "forward",
     "trigger": 7,
     "echo": 11,
-    "output": 37,
+    "output": 37, # corresponding pin for vibration output
     "distance": False,
-    "alertDistance": 65,
+    "alertDistance": 100, #how far (cm) an object needs to be to start alerting the user
 },
 {   
     "name": "left",
-    "alertDistance" : 40,
+    "alertDistance" : 50,
     "distance": False,
     "trigger": 8,
     "echo": 10,
@@ -25,7 +25,7 @@ MEASUREMENTS = [{
     "echo": 16,
     "output": 40,
     "distance": False,
-    "alertDistance": 40,
+    "alertDistance": 50, 
 }]
 
 GPIO.setmode(GPIO.BOARD)
@@ -79,14 +79,6 @@ def alert_user():
 def print_distance():
     for sensor in MEASUREMENTS:
         print("Sensor ", sensor['name'] , " Distance: ", sensor['distance'])
-
-# def output_distance(sensor):
-#     distance = {
-#         "output": sensor['output'],
-#         "distance": get_distance(sensor["trigger"], sensor["echo"], 2),
-#         "alertDistance": sensor['alertDistance']
-#     }
-#     return distance
 
 try:
     thread = threading.Thread(target=alert_user)
