@@ -50,7 +50,6 @@ def get_distance(trigger, echo, num_readings):
             stop_time = time.time()
             if stop_time - pulse_start > 0.01: # break if echo remains high for too long
                 distance = 100
-                print('breaking from here')
                 break
             else:
                 distance = (stop_time - start_time) * 34300 / 2
@@ -72,7 +71,6 @@ def alert_user():
             distance = sensor['distance']
             if distance and distance < sensor['alertDistance']:
                 buzz_frequency = get_buzz_frequency(distance)
-                print('buzz frequency', buzz_frequency)
                 GPIO.output(sensor['output'], True)
                 time.sleep(buzz_frequency)
                 GPIO.output(sensor['output'], False)
@@ -96,7 +94,7 @@ try:
 
     while True:
         for sensor in MEASUREMENTS:
-            distance = get_distance(sensor["trigger"], sensor["echo"], 4)
+            distance = get_distance(sensor["trigger"], sensor["echo"], 3)
             sensor['distance'] = distance
             buzz_frequency = get_buzz_frequency(distance)
 
