@@ -30,10 +30,10 @@ MEASUREMENTS = [{
 
 GPIO.setmode(GPIO.BOARD)
 
-for setup in MEASUREMENTS:
-    GPIO.setup(setup["trigger"], GPIO.OUT)
-    GPIO.setup(setup["echo"], GPIO.IN)
-    GPIO.setup(setup["output"], GPIO.OUT)
+for sensor in MEASUREMENTS:
+    GPIO.setup(sensor["trigger"], GPIO.OUT)
+    GPIO.setup(sensor["echo"], GPIO.IN)
+    GPIO.setup(sensor["output"], GPIO.OUT)
 
 def get_distance(trigger, echo, num_readings):
     distances = []
@@ -66,11 +66,12 @@ def get_buzz_frequency(distance):
     return frequency
 
 def alert_user():
+    print("IN ALERT USER")
     while True:
         for sensor in MEASUREMENTS:
             print("distance is ", distance)
             distance = sensor['distance']
-            if distance and distance < sensor['alert_distance']:
+            if distance and distance < sensor['alertDistance']:
                 buzz_frequency = get_buzz_frequency(distance)
                 print('buzz frequency', buzz_frequency)
                 GPIO.output(sensor['output'], True)
