@@ -35,7 +35,9 @@ for sensor in MEASUREMENTS:
     GPIO.setup(sensor["echo"], GPIO.IN)
     GPIO.setup(sensor["output"], GPIO.OUT)
 
-sound_speed = 34300 #cm per second
+SOUND_SPEED = 34300 #cm per second
+MAXIMUM_WAIT_TIME = 0.01
+MAXIMUM_DETECTABLE_DISTANCE = MAXIMUM_WAIT_TIME * SOUND_SPEED / 2
 
 def get_distance(trigger, echo, num_readings):
     distances = []
@@ -49,17 +51,16 @@ def get_distance(trigger, echo, num_readings):
         while GPIO.input(echo) == 0:
             start_time = time.time()
         # pulse_start = time.time()
-        maximum_wait_time = 0.01
-        maximum_distance = maximum_wait_time * sound_speed / 2
+
         while GPIO.input(echo) == 1:
             stop_time = time.time()
             # if the echo waits for the trigger signal too long, assume its too far away and stop waiting
             # this gives more frequent readings
-            if stop_time - start_time > maximum_wait_time: 
-                distance = maximum_distance
+            if stop_time - start_time > MAXIMUM_WAIT_TIME: 
+                distance = MAXIMUM_DETECTABLE_DISTANCE
                 break
             else:
-                distance = (stop_time - start_time) * sound_speed / 2
+                distance = (stop_time - start_time) * SOUND_SPEED / 2
 
         distances.append(distance)
         time.sleep(0.01)
