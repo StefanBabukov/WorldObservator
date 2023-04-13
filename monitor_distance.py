@@ -70,7 +70,6 @@ def alert_user():
     while True:
         for sensor in MEASUREMENTS:
             distance = sensor['distance']
-            print("distance is ", distance)
             if distance and distance < sensor['alertDistance']:
                 buzz_frequency = get_buzz_frequency(distance)
                 print('buzz frequency', buzz_frequency)
