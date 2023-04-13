@@ -37,6 +37,7 @@ for sensor in MEASUREMENTS:
 
 def get_distance(trigger, echo, num_readings):
     distances = []
+    # getting a number of readings at a time and averaging them, to eliminate innacuracies
     for i in range(num_readings):
         GPIO.output(trigger, True)
         time.sleep(0.00001)
@@ -45,10 +46,12 @@ def get_distance(trigger, echo, num_readings):
         stop_time = time.time()
         while GPIO.input(echo) == 0:
             start_time = time.time()
-        pulse_start = time.time()
+        # pulse_start = time.time()
         while GPIO.input(echo) == 1:
             stop_time = time.time()
-            if stop_time - pulse_start > 0.01: # break if echo remains high for too long
+            # if the echo waits for the trigger signal too long, assume its too far away and stop waiting
+            # this gives more frequent readings
+            if stop_time - start_time > 0.01: 
                 distance = 100
                 break
             else:
@@ -59,13 +62,13 @@ def get_distance(trigger, echo, num_readings):
     return sum(distances) / num_readings
 
 def get_buzz_frequency(distance):
+    # calculated so the closer the object is, the faster the vibrations are with a maximum frequency
     frequency = distance / 60
     if frequency < 0.25:
         frequency = 0.25
     return frequency
 
 def alert_user():
-    print("IN ALERT USER")
     while True:
         for sensor in MEASUREMENTS:
             distance = sensor['distance']
