@@ -37,7 +37,7 @@ for sensor in MEASUREMENTS:
 
 SOUND_SPEED = 34300 #cm per second
 MAXIMUM_WAIT_TIME = 0.005
-MAXIMUM_DETECTABLE_DISTANCE = MAXIMUM_WAIT_TIME * SOUND_SPEED / 2
+MAXIMUM_DISTANCE = MAXIMUM_WAIT_TIME * SOUND_SPEED / 2
 
 def get_distance(trigger, echo, num_readings):
     distances = []
@@ -57,7 +57,7 @@ def get_distance(trigger, echo, num_readings):
             # if the echo waits for the trigger signal too long, assume its too far away and stop waiting
             # this gives more frequent readings
             if stop_time - start_time > MAXIMUM_WAIT_TIME: 
-                distance = MAXIMUM_DETECTABLE_DISTANCE
+                distance = MAXIMUM_DISTANCE
                 break
             else:
                 distance = (stop_time - start_time) * SOUND_SPEED / 2
@@ -89,7 +89,7 @@ def alert_user():
 def print_distance():
     for sensor in MEASUREMENTS:
         distance = sensor['distance']
-        if distance == 'clear':
+        if distance == MAXIMUM_DISTANCE:
             print("Sensor ", sensor['name'] , "CLEAR")
             continue
         print("Sensor ", sensor['name'] , " Object at: ",  "{:.2f} ".format(distance), ' cm')
