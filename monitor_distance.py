@@ -36,7 +36,7 @@ for sensor in MEASUREMENTS:
     GPIO.setup(sensor["output"], GPIO.OUT)
 
 SOUND_SPEED = 34300 #cm per second
-MAXIMUM_WAIT_TIME = 0.01
+MAXIMUM_WAIT_TIME = 0.005
 MAXIMUM_DETECTABLE_DISTANCE = MAXIMUM_WAIT_TIME * SOUND_SPEED / 2
 
 def get_distance(trigger, echo, num_readings):
