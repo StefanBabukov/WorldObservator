@@ -9,7 +9,7 @@ MEASUREMENTS = [{
     "trigger": 7,
     "echo": 11,
     "output": 37, # corresponding pin for vibration output
-    "alertDistance": 100, #how far (cm) an object needs to be to start alerting the user
+    "alertDistance": 90, #how far (cm) an object needs to be to start alerting the user
 },
 {   
     "name": "right",
@@ -36,7 +36,7 @@ for sensor in MEASUREMENTS:
     GPIO.setup(sensor["output"], GPIO.OUT)
 
 SOUND_SPEED = 34300 #cm per second
-MAXIMUM_WAIT_TIME = 0.005
+MAXIMUM_WAIT_TIME = 0.01
 MAXIMUM_DISTANCE = MAXIMUM_WAIT_TIME * SOUND_SPEED / 2
 
 def get_distance(trigger, echo, num_readings):
