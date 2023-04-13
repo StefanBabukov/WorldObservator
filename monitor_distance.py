@@ -84,7 +84,7 @@ def print_distance():
         distance = sensor['distance']
         if distance == 100:
             distance = 'clear'
-        print("Sensor ", sensor['name'] , " Object at: ", distance, ' cm')
+        print("Sensor ", sensor['name'] , " Object at: ", "{:.2f} ".format(distance), ' cm')
 
 try:
     thread = threading.Thread(target=alert_user)
