@@ -57,7 +57,7 @@ def get_distance(trigger, echo, num_readings):
             else:
                 distance = (stop_time - start_time) * 34300 / 2
 
-        distances.append(round(distance,2))
+        distances.append(distance)
         time.sleep(0.01)
     return sum(distances) / num_readings
 
