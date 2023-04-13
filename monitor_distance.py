@@ -52,7 +52,7 @@ def get_distance(trigger, echo, num_readings):
             # if the echo waits for the trigger signal too long, assume its too far away and stop waiting
             # this gives more frequent readings
             if stop_time - pulse_start > 0.01: 
-                distance = 100
+                distance = 'clear'
                 break
             else:
                 distance = (stop_time - start_time) * 34300 / 2
@@ -82,9 +82,11 @@ def alert_user():
 def print_distance():
     for sensor in MEASUREMENTS:
         distance = sensor['distance']
-        if distance == 100:
-            distance = 'clear'
-        print("Sensor ", sensor['name'] , " Object at: ", "{:.2f} ".format(distance), ' cm')
+        if distance == 'clear':
+            print("Sensor ", sensor['name'] , "CLEAR")
+            return
+        print("Sensor ", sensor['name'] , " Object at: ",  "{:.2f} ".format(distance), ' cm')
+        
 
 try:
     thread = threading.Thread(target=alert_user)
