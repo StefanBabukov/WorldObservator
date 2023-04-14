@@ -73,18 +73,17 @@ def get_buzz_frequency(distance):
         frequency = 0.25
     return frequency
 
-def alert_user():
+def alert_user(sensor):
     while True:
-        for sensor in MEASUREMENTS:
-            distance = sensor['distance']
-            if distance=='clear':
-                continue
-            if distance < sensor['alertDistance']:
-                buzz_frequency = get_buzz_frequency(distance)
-                GPIO.output(sensor['output'], True)
-                time.sleep(0.5)
-                GPIO.output(sensor['output'], False)
-                time.sleep(buzz_frequency)
+        distance = sensor['distance']
+        if distance=='clear':
+            continue
+        if distance < sensor['alertDistance']:
+            buzz_frequency = get_buzz_frequency(distance)
+            GPIO.output(sensor['output'], True)
+            time.sleep(0.5)
+            GPIO.output(sensor['output'], False)
+            time.sleep(buzz_frequency)
 
 def print_distance():
     for sensor in MEASUREMENTS:
@@ -96,8 +95,9 @@ def print_distance():
         
 
 try:
-    thread = threading.Thread(target=alert_user)
-    thread.start()
+    for sensor in MEASUREMENTS:
+        thread = threading.Thread(target=alert_user, args={sensor})
+        thread.start()
 
     while True:
         for sensor in MEASUREMENTS:
